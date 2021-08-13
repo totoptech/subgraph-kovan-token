@@ -99,6 +99,15 @@ export class User extends Entity {
   set id(value: string) {
     this.set("id", Value.fromString(value));
   }
+
+  get balance(): BigInt {
+    let value = this.get("balance");
+    return value.toBigInt();
+  }
+
+  set balance(value: BigInt) {
+    this.set("balance", Value.fromBigInt(value));
+  }
 }
 
 export class UserTokenDayData extends Entity {
