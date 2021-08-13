@@ -1,0 +1,18 @@
+type Transfer @entity {
+  id: ID!
+  from: Bytes! # address
+  to: Bytes! # address
+  value: BigInt! # uint256
+}
+
+type User @entity {
+  id: ID!
+  balance: BigInt!
+}
+
+type UserTokenDayData @entity {
+  id: ID!
+  date: Int!
+  balance: BigInt!
+  user: Bytes!
+}
