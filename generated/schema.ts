@@ -12,64 +12,6 @@ import {
   BigDecimal
 } from "@graphprotocol/graph-ts";
 
-export class Transfer extends Entity {
-  constructor(id: string) {
-    super();
-    this.set("id", Value.fromString(id));
-  }
-
-  save(): void {
-    let id = this.get("id");
-    assert(id !== null, "Cannot save Transfer entity without an ID");
-    assert(
-      id.kind == ValueKind.STRING,
-      "Cannot save Transfer entity with non-string ID. " +
-        'Considering using .toHex() to convert the "id" to a string.'
-    );
-    store.set("Transfer", id.toString(), this);
-  }
-
-  static load(id: string): Transfer | null {
-    return store.get("Transfer", id) as Transfer | null;
-  }
-
-  get id(): string {
-    let value = this.get("id");
-    return value.toString();
-  }
-
-  set id(value: string) {
-    this.set("id", Value.fromString(value));
-  }
-
-  get from(): Bytes {
-    let value = this.get("from");
-    return value.toBytes();
-  }
-
-  set from(value: Bytes) {
-    this.set("from", Value.fromBytes(value));
-  }
-
-  get to(): Bytes {
-    let value = this.get("to");
-    return value.toBytes();
-  }
-
-  set to(value: Bytes) {
-    this.set("to", Value.fromBytes(value));
-  }
-
-  get value(): BigInt {
-    let value = this.get("value");
-    return value.toBigInt();
-  }
-
-  set value(value: BigInt) {
-    this.set("value", Value.fromBigInt(value));
-  }
-}
-
 export class User extends Entity {
   constructor(id: string) {
     super();
@@ -165,5 +107,112 @@ export class UserTokenDayData extends Entity {
 
   set user(value: Bytes) {
     this.set("user", Value.fromBytes(value));
+  }
+}
+
+export class UserTransaction extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id !== null, "Cannot save UserTransaction entity without an ID");
+    assert(
+      id.kind == ValueKind.STRING,
+      "Cannot save UserTransaction entity with non-string ID. " +
+        'Considering using .toHex() to convert the "id" to a string.'
+    );
+    store.set("UserTransaction", id.toString(), this);
+  }
+
+  static load(id: string): UserTransaction | null {
+    return store.get("UserTransaction", id) as UserTransaction | null;
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get user(): Bytes {
+    let value = this.get("user");
+    return value.toBytes();
+  }
+
+  set user(value: Bytes) {
+    this.set("user", Value.fromBytes(value));
+  }
+
+  get from(): Bytes {
+    let value = this.get("from");
+    return value.toBytes();
+  }
+
+  set from(value: Bytes) {
+    this.set("from", Value.fromBytes(value));
+  }
+
+  get amount(): BigInt {
+    let value = this.get("amount");
+    return value.toBigInt();
+  }
+
+  set amount(value: BigInt) {
+    this.set("amount", Value.fromBigInt(value));
+  }
+
+  get timestamp(): BigInt {
+    let value = this.get("timestamp");
+    return value.toBigInt();
+  }
+
+  set timestamp(value: BigInt) {
+    this.set("timestamp", Value.fromBigInt(value));
+  }
+}
+
+export class TokenFactory extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id !== null, "Cannot save TokenFactory entity without an ID");
+    assert(
+      id.kind == ValueKind.STRING,
+      "Cannot save TokenFactory entity with non-string ID. " +
+        'Considering using .toHex() to convert the "id" to a string.'
+    );
+    store.set("TokenFactory", id.toString(), this);
+  }
+
+  static load(id: string): TokenFactory | null {
+    return store.get("TokenFactory", id) as TokenFactory | null;
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get totalCount(): i32 {
+    let value = this.get("totalCount");
+    return value.toI32();
+  }
+
+  set totalCount(value: i32) {
+    this.set("totalCount", Value.fromI32(value));
   }
 }
