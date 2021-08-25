@@ -1,48 +1,51 @@
 import { Transfer as TransferEvent } from "../generated/Token/Token";
 import { updateUserTokenDayData } from "./dayUpdates";
 import {
-  ADDRESS_ZERO,
   createUserTransaction,
   INITIAL_BALANCE,
   TOKEN_ADDRESS,
   ZERO_BI,
 } from "./helpers";
-import { Token as TokenContract } from "../generated/Token/Token";
-
-import { BigInt } from "@graphprotocol/graph-ts";
 import { TokenFactory, User } from "../generated/schema";
 
 export function handleTransfer(event: TransferEvent): void {
-  // ignore initial transfers for first adds
-  if (
-    event.params.to.toHexString() == ADDRESS_ZERO &&
-    event.params.value.equals(BigInt.fromI32(INITIAL_BALANCE))
-  ) {
-    let tokenFactory = new TokenFactory(TOKEN_ADDRESS);
-    tokenFactory.totalCount = 0;
-    tokenFactory.save();
-    return;
-  }
-
   let tokenFactory = TokenFactory.load(TOKEN_ADDRESS);
-  let tokenContract = TokenContract.bind(event.address);
+  if (tokenFactory === null) {
+    tokenFactory = new TokenFactory(TOKEN_ADDRESS);
+    tokenFactory.totalHoldersCount = 0;
+    tokenFactory.save();
+  }
 
   let from = event.params.from;
   let to = event.params.to;
   let timestamp = event.block.timestamp;
   let amount = event.params.value;
 
-  let fromBalance = tokenContract.balanceOf(event.params.from);
-
   let toUser = User.load(to.toHexString());
 
   if (toUser === null) {
     toUser = new User(to.toHexString());
-    tokenFactory.totalCount++;
+    toUser.balance = ZERO_BI;
+    tokenFactory.totalHoldersCount++;
   }
 
-  if (fromBalance.equals(ZERO_BI)) {
-    tokenFactory.totalCount--;
+  toUser.balance = toUser.balance.plus(amount);
+  toUser.save();
+
+  let fromUser = User.load(from.toHexString());
+
+  if (fromUser === null) {
+    // We can assume that it is the first transfering from the ZERO address.
+    fromUser = new User(from.toHexString());
+    fromUser.balance = INITIAL_BALANCE;
+  }
+
+  fromUser.balance = fromUser.balance.minus(amount);
+
+  fromUser.save();
+
+  if (fromUser.balance.equals(ZERO_BI)) {
+    tokenFactory.totalHoldersCount--;
   }
 
   tokenFactory.save();

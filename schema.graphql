@@ -20,5 +20,5 @@ type UserTransaction @entity {
 
 type TokenFactory @entity {
   id: ID!
-  totalCount: Int!
+  totalHoldersCount: Int!
 }

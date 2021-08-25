@@ -207,12 +207,12 @@ export class TokenFactory extends Entity {
     this.set("id", Value.fromString(value));
   }
 
-  get totalCount(): i32 {
-    let value = this.get("totalCount");
+  get totalHoldersCount(): i32 {
+    let value = this.get("totalHoldersCount");
     return value.toI32();
   }
 
-  set totalCount(value: i32) {
-    this.set("totalCount", Value.fromI32(value));
+  set totalHoldersCount(value: i32) {
+    this.set("totalHoldersCount", Value.fromI32(value));
   }
 }
