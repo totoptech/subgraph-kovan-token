@@ -26,6 +26,9 @@ export function handleTransfer(event: TransferEvent): void {
   if (toUser === null) {
     toUser = new User(to.toHexString());
     toUser.balance = ZERO_BI;
+  }
+
+  if (toUser.balance.equals(ZERO_BI)) {
     tokenFactory.totalHoldersCount++;
   }
 
